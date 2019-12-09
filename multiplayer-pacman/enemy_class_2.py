@@ -11,7 +11,7 @@ class Enemy_2:
         self.grid_pos = pos
         self.starting_pos = [pos.x, pos.y]
         self.pix_pos = self.get_pix_pos()
-        self.radius = int(self.app.cell_width//2.3)
+        self.radius = 9
         self.number = number
         self.colour = self.set_colour()
         self.direction = vec(0, 0)
@@ -20,7 +20,7 @@ class Enemy_2:
         self.speed = self.set_speed()
 
     def update(self):
-        self.target = self.set_target()
+        self.target = self.app.player.grid2_pos
         if self.target != self.grid_pos:
             self.pix_pos += self.direction * self.speed
             if self.time_to_move():
@@ -43,9 +43,6 @@ class Enemy_2:
             speed = 1
         return speed
 
-    def set_target(self):
-        if self.personality == "speedy" or self.personality == "slow":
-            return self.app.player.grid2_pos
 
     def time_to_move(self):
         if int(self.pix_pos.x+TOP_BOTTOM_BUFFER//2) % self.app.cell_width == 0:

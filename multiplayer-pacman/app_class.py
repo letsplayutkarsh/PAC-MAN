@@ -1,14 +1,14 @@
 import pygame
 import sys
 import copy
+
 from settings import *
 from player_class import *
 from enemy_class_1 import *
 from enemy_class_2 import *
-import time
-
 
 pygame.init()
+
 vec = pygame.math.Vector2
 
 
@@ -19,11 +19,9 @@ class App:
         icon = pygame.image.load('pacman.jpg')
         pygame.display.set_icon(icon)
 
+        # self.pacman_eat = pygame.mixer.music.load('pac-man_eat_fruit.wav')
+        self.background_music = pygame.mixer.music.load('pac_man.mp3')
 
-        self.start_time_1 = 0
-        self.start_time_2 = 0
-        self.end_time_1 = 0
-        self.end_time_2 = 0
 
         self.player_1_mortal = True
         self.player_2_mortal = True
@@ -63,6 +61,7 @@ class App:
                 self.playing_update()
                 self.playing_draw()
 
+
             elif self.state == 'game over':
                 self.game_over_events()
                 self.game_over_update()
@@ -90,6 +89,7 @@ class App:
         screen.blit(text, pos)
 
     def load(self):
+        pygame.mixer.music.play(-1)
         self.background = pygame.image.load('maze.png')
         self.background = pygame.transform.scale(
             self.background, (MAZE_WIDTH, MAZE_HEIGHT))
@@ -148,6 +148,7 @@ class App:
             enemy.grid_pos = vec(enemy.starting_pos)
             enemy.pix_pos = enemy.get_pix_pos()
             enemy.direction *= 0
+            
         for enemy in self.enemies_2:
             enemy.grid_pos = vec(enemy.starting_pos)
             enemy.pix_pos = enemy.get_pix_pos()
@@ -176,6 +177,9 @@ class App:
                 self.state = 'playing'
             if event.type == pygame.KEYDOWN and event.key == pygame.K_i:
                 self.state = 'instrusction'
+
+
+
 
     def start_update(self):
         pass
@@ -292,12 +296,16 @@ class App:
         for enemy in self.enemies_1:
             if enemy.grid_pos == self.player.grid1_pos:
                 self.remove_life_1()
+
             if enemy.grid_pos == self.player.grid2_pos:
                 self.remove_life_2()
+
 
         for enemy in self.enemies_2:
             if enemy.grid_pos == self.player.grid1_pos:
                 self.remove_life_1()
+
+
             if enemy.grid_pos == self.player.grid2_pos:
                 self.remove_life_2()
 
@@ -327,6 +335,7 @@ class App:
         pygame.display.update()
 
     def remove_life_1(self):
+
         if(self.player_1_mortal):
             self.player.lives_1 -= 1
             self.player.current_score_1 -= 10
@@ -348,6 +357,7 @@ class App:
                     enemy.direction *= 0
 
     def remove_life_2(self):
+
         if(self.player_2_mortal):
             self.player.lives_2 -= 1
             self.player.current_score_2 -= 10
